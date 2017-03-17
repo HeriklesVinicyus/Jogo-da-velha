@@ -5,6 +5,7 @@ import java.util.Scanner;
 import codigos.Jogador;
 import codigos.Tabuleiro;
 import negocio.Controlador;
+import negocio.JogadorMaquina;
 
 public class Jogo {
 	
@@ -37,12 +38,19 @@ public class Jogo {
 		Controlador c = new Controlador();
 		Scanner scan = new Scanner(System.in);
 
-		for (int i = 0; i < j.length; i++) {
+		/*for (int i = 0; i < j.length; i++) {
 			System.out.println("Digite o nome do Jogador: " + (i + 1));
 			String nome = scan.next();
 
 			j[i] = new Jogador(i+1, nome);
-		}
+		}*/
+		
+		System.out.println("Digite o nome do Jogador: 1");
+		String nome = scan.next();
+
+		j[0] = new Jogador(1, nome);
+		j[1] = new JogadorMaquina();
+		
 		System.out.println(mostraInd());
 		
 		for (int i = 0;; i++) {
@@ -62,14 +70,13 @@ public class Jogo {
 				boolean jogadaValida;
 				
 				do{
-					//ind = i%2;
 					System.out.print(j[ind].getNome()+" "+((ind==0)?"(X)":"(O)")+": Digite um indice: ");
-					x = scan.nextInt();
+					x =(ind==0)?scan.nextInt():0;
 					
-					aux = metodoParaUserBurro(x);
+					aux =(ind==0)?metodoParaUserBurro(x):((JogadorMaquina) j[1]).jogada(t);
 					jogadaValida = c.verificarPosicao(t, aux[0], aux[1]);
 					
-					if(!jogadaValida)
+					if(!jogadaValida && ind==0)
 						System.out.println("Jogada invalida, por favor verifique os dados");
 					
 				}while (!jogadaValida);
