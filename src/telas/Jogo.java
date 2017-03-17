@@ -7,9 +7,32 @@ import codigos.Tabuleiro;
 import negocio.Controlador;
 
 public class Jogo {
+	
+	public static int[] metodoParaUserBurro(int userInput){
+		
+		int[] res = new int[2];
+		
+		if(userInput>=7 && userInput<=9){
+			res[0] = 0;
+			res[1] = (userInput-7);
+		}else if(userInput>=4 && userInput<=6){
+			res[0] = 1;
+			res[1] = (userInput-4);
+		}else if(userInput>=1 && userInput<=3){
+			res[0] = 2;
+			res[1] = (userInput-1);
+		}
+		
+		return res;
+		
+	}
+	
+	public static String mostraInd(){
+		return "esses sao os indeces:\n7|8|9\n4|5|6\n1|2|3";
+	}
 
 	public static void main(String[] args) {
-		Tabuleiro t = new Tabuleiro();
+		Tabuleiro t;
 		Jogador[] j = new Jogador[2];
 		Controlador c = new Controlador();
 		Scanner scan = new Scanner(System.in);
@@ -20,39 +43,40 @@ public class Jogo {
 
 			j[i] = new Jogador(i+1, nome);
 		}
-
+		System.out.println(mostraInd());
+		
 		for (int i = 0;; i++) {
 			
+			t = new Tabuleiro();
 			boolean vencedor = false;
+			
+			
 			do {
 				System.out.println("\n"+j[0].getNome()+": "+j[0].getPontuacao() );
 				System.out.println(j[1].getNome()+": "+j[1].getPontuacao()+"\n" );
 				System.out.println(t);
 				
 				int x;
-				int y;
-				int ind;
+				int[] aux;
+				int ind = i%2;
 				boolean jogadaValida;
 				
 				do{
-					ind = i%2;
-					System.out.print(j[ind].getNome()+" Digite uma linha: ");
+					//ind = i%2;
+					System.out.print(j[ind].getNome()+" "+((ind==0)?"(X)":"(O)")+": Digite um indice: ");
 					x = scan.nextInt();
-					System.out.print(j[ind].getNome()+" Digite uma coluna: ");
-					y = scan.nextInt();
 					
-					jogadaValida = c.verificarPosicao(t, x, y);
+					aux = metodoParaUserBurro(x);
+					jogadaValida = c.verificarPosicao(t, aux[0], aux[1]);
 					
 					if(!jogadaValida)
 						System.out.println("Jogada invalida, por favor verifique os dados");
 					
 				}while (!jogadaValida);
 				
-				t.inserirValor(j[ind], x, y);
+				t.inserirValor(j[ind], aux[0], aux[1]);
 				
-				
-				
-				vencedor = c.verificarVencedor(j[i%2], t);
+				vencedor = c.verificarVencedor(j[ind], t);
 				
 				i++;
 				
@@ -60,11 +84,8 @@ public class Jogo {
 					System.out.println("Jogador: "+j[ind].getNome()+" eh o vencedor");
 					j[ind].setPontuacao();
 					i = ind;
-				}
-				
-				
-				vencedor = c.verificarImpate(t);
-				if(vencedor){
+				}else if(c.verificarImpate(t)){
+					vencedor = true;
 					System.out.println("Deu Impate!\n");
 					i = ind;
 				}

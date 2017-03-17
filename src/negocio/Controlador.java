@@ -50,7 +50,7 @@ public class Controlador {
 				return true;
 			}
 		}
-		if (auxTab[0][0] == auxJog && auxTab[1][1] == auxJog && auxTab[2][3] == auxJog)
+		if (auxTab[0][0] == auxJog && auxTab[1][1] == auxJog && auxTab[2][2] == auxJog)
 			return true;
 		else if (auxTab[0][2] == auxJog && auxTab[1][1] == auxJog && auxTab[2][0] == auxJog)
 			return true;
