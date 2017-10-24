@@ -93,7 +93,7 @@ public class Jogo {
 					i = ind;
 				}else if(c.verificarImpate(t)){
 					vencedor = true;
-					System.out.println("Deu Impate!\n");
+					System.out.println("Deu Empate!\n");
 					i = ind;
 				}
 				
